@@ -26,49 +26,7 @@ class _PokeViewState extends State<PokeView> {
                   }
 
                   if (snapshot.hasData) {
-                    return Container(
-                        color:
-                            controller.getBackgroundColor(snapshot.data.type),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Center(
-                                child: Image.network(
-                                  snapshot.data.imageUrl,
-                                  height: 200,
-                                  width: 200,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 30),
-                                child: Center(
-                                    child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black38,
-                                              offset: const Offset(
-                                                5.0,
-                                                5.0,
-                                              ),
-                                              blurRadius: 10.0,
-                                              spreadRadius: 1.0,
-                                            )
-                                          ],
-                                        ),
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 10, horizontal: 40),
-                                        child: Text(
-                                            snapshot.data.nome[0]
-                                                    .toUpperCase() +
-                                                snapshot.data.nome.substring(1),
-                                            style: TextStyle(fontSize: 24)))),
-                              ),
-                            ]));
+                    return PokemonContainerComponent(snapshot, controller);
                   } else if (snapshot.hasError) {
                     return Text(snapshot.error,
                         style: TextStyle(fontSize: 18, color: Colors.red));
@@ -86,5 +44,54 @@ class _PokeViewState extends State<PokeView> {
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked));
+  }
+}
+
+class PokemonContainerComponent extends StatelessWidget {
+  final AsyncSnapshot snapshot;
+  final PokemonController controller;
+
+  PokemonContainerComponent(this.snapshot, this.controller, {Key key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        color: controller.getBackgroundColor(snapshot.data.type),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Center(
+            child: Image.network(
+              snapshot.data.imageUrl,
+              height: 200,
+              width: 200,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 30),
+            child: Center(
+                child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black38,
+                          offset: const Offset(
+                            5.0,
+                            5.0,
+                          ),
+                          blurRadius: 10.0,
+                          spreadRadius: 1.0,
+                        )
+                      ],
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+                    child: Text(
+                        snapshot.data.nome[0].toUpperCase() +
+                            snapshot.data.nome.substring(1),
+                        style: TextStyle(fontSize: 24)))),
+          ),
+        ]));
   }
 }
